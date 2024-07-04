@@ -1,0 +1,2 @@
+#!/bin.sh
+npm --prefix vite-project run lint

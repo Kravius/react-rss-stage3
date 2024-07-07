@@ -1,4 +1,5 @@
-import { Component, ChangeEvent } from 'react';
+import { Component, ChangeEvent, FormEvent } from 'react';
+import { Main } from './Main-page';
 
 export interface Person {
   name: string;
@@ -79,24 +80,32 @@ class SearchPage extends Component<object, State> {
     this.setState({ searchTerm: event.target.value });
   };
 
-  handleSearchButtonClick = () => {
+  handleSearchButtonClick = (ev: FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
     this.fetchSearchResults();
   };
 
   render() {
-    const { searchTerm } = this.state;
-
+    const { searchTerm, searchResults } = this.state;
     return (
       <>
-        <header className="top-section">
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={this.handleSearchInputChange}
-            placeholder="Введите поисковый запрос"
-          />
-          <button onClick={this.handleSearchButtonClick}>Поиск</button>
+        <header className="header">
+          <form onSubmit={this.handleSearchButtonClick}>
+            <input
+              className="search-input"
+              type="text"
+              value={searchTerm}
+              onChange={this.handleSearchInputChange}
+              placeholder="Введите поисковый запрос"
+            />
+            <button className="searchBTN" type="submit">
+              Поиск
+            </button>
+          </form>
         </header>
+        {(searchResults.length >= 1 && (
+          <Main searchResults={searchResults}></Main>
+        )) || <h1 className="title-main">Nothing found for your search</h1>}
       </>
     );
   }

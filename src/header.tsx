@@ -11,12 +11,16 @@ export interface Person {
 interface State {
   searchTerm: string;
   searchResults: Person[];
+  isLoading: boolean;
+  counterError: number;
 }
 
 class SearchPage extends Component<object, State> {
   state: State = {
     searchTerm: '',
     searchResults: [],
+    isLoading: false,
+    counterError: 0,
   };
 
   componentDidMount() {
@@ -27,7 +31,7 @@ class SearchPage extends Component<object, State> {
         this.fetchSearchResults
       );
     } else {
-      this.fetchAllItems();
+      this.fetchAItems();
     }
   }
 
@@ -37,8 +41,11 @@ class SearchPage extends Component<object, State> {
     }
   }
 
-  fetchAllItems = () => {
-    fetch('https://swapi.dev/api/people/')
+  fetchAItems = (searchTerm?: string): void => {
+    this.setState({ isLoading: true });
+    fetch(
+      `https://swapi.dev/api/people/${searchTerm ? '?search=' + searchTerm : ''}`
+    )
       .then((response) => response.json())
       .then((data) => {
         const results: Person[] = data.results.map((person: Person) => ({
@@ -51,42 +58,30 @@ class SearchPage extends Component<object, State> {
       })
       .catch((error) => {
         console.error('Error fetching data:', error);
-      });
+      })
+      .finally(() => this.setState({ isLoading: false }));
   };
 
-  fetchSearchResults = () => {
+  fetchSearchResults = (): void => {
     const { searchTerm } = this.state;
     if (searchTerm === '') {
-      this.fetchAllItems();
+      this.fetchAItems();
     } else {
-      fetch(`https://swapi.dev/api/people/?search=${searchTerm}`)
-        .then((response) => response.json())
-        .then((data) => {
-          const results: Person[] = data.results.map((person: Person) => ({
-            name: person.name,
-            height: person.height,
-            mass: person.mass,
-            birth_year: person.birth_year,
-          }));
-          this.setState({ searchResults: results });
-        })
-        .catch((error) => {
-          console.error('Error fetching data:', error);
-        });
+      this.fetchAItems(searchTerm);
     }
   };
 
-  handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>) => {
+  handleSearchInputChange = (event: ChangeEvent<HTMLInputElement>): void => {
     this.setState({ searchTerm: event.target.value });
   };
 
-  handleSearchButtonClick = (ev: FormEvent<HTMLFormElement>) => {
+  handleSearchButtonClick = (ev: FormEvent<HTMLFormElement>): void => {
     ev.preventDefault();
     this.fetchSearchResults();
   };
 
   render() {
-    const { searchTerm, searchResults } = this.state;
+    const { searchTerm, searchResults, isLoading } = this.state;
     return (
       <>
         <header className="header">
@@ -96,16 +91,18 @@ class SearchPage extends Component<object, State> {
               type="text"
               value={searchTerm}
               onChange={this.handleSearchInputChange}
-              placeholder="Введите поисковый запрос"
+              placeholder="Введите имя"
             />
             <button className="searchBTN" type="submit">
               Поиск
             </button>
           </form>
         </header>
-        {(searchResults.length >= 1 && (
-          <Main searchResults={searchResults}></Main>
-        )) || <h1 className="title-main">Nothing found for your search</h1>}
+
+        {(isLoading && <h3>Loading...</h3>) ||
+          (searchResults.length >= 1 && (
+            <Main searchResults={searchResults}></Main>
+          )) || <h1 className="title-main">Nothing found for your search</h1>}
       </>
     );
   }

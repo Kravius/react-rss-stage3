@@ -1,7 +1,7 @@
 import StylesMain from './main.module.css';
 
 import React from 'react';
-import { Person } from '../../header';
+import { Person } from '../Header/Header';
 
 interface Props {
   searchResults: Person[];

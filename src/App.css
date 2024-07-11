@@ -11,24 +11,3 @@ body {
   text-align: center;
   box-sizing: border-box;
 }
-
-.header {
-  border: 1px solid silver;
-  margin: 20px auto;
-  padding: 5px 20px;
-}
-
-.search-input {
-  background-color: #e69d0c;
-  border-radius: 5px;
-  color: #393ff4;
-}
-
-.searchBTN {
-  margin-left: 5px;
-  background-color: #61dafbaa;
-  &:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-    color: #5d1ea5aa;
-  }
-}

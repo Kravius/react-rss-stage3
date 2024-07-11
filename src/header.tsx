@@ -1,5 +1,12 @@
-import { Component, ChangeEvent, FormEvent } from 'react';
-import { Main } from './Main-page';
+import {
+  Component,
+  // useState,
+  // useEffect,
+  ChangeEvent,
+  FormEvent,
+  // FC,
+} from 'react';
+import { Main } from './components/Main/Main-page';
 
 export interface Person {
   name: string;

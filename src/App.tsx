@@ -1,7 +1,7 @@
 import './App.css';
 import SearchPage from './header';
-import ErrorBoundary from './ErrorBoundary';
-import ButtonError from './components/Button-error';
+import ErrorBoundary from './components/ErrorBoundary';
+import ButtonError from './components/Button/Button-error';
 
 function App() {
   return (

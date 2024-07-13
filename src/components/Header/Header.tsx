@@ -24,6 +24,7 @@ const SearchPage: FC = () => {
     'searchTerm',
     ''
   );
+  const [currentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [searchResults, setSearchResults] = useState<Person[]>([]);
   const [buttonClicked, setButtonClicked] = useState(false);
@@ -33,7 +34,7 @@ const SearchPage: FC = () => {
     try {
       const result = searchTerm
         ? await fetchSearchResults(searchTerm)
-        : await fetchAllItems();
+        : await fetchAllItems(currentPage);
       setSearchResults(result);
     } catch (error) {
       console.error('Oops');

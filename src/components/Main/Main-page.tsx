@@ -1,3 +1,14 @@
+import {
+  Outlet,
+  // Link,
+  // useLoaderData,
+  // Form,
+  // redirect,
+  NavLink,
+  // useNavigation,
+  // useSubmit,
+} from 'react-router-dom';
+
 import StylesMain from './main.module.css';
 
 import React from 'react';
@@ -12,21 +23,28 @@ export const Main: React.FC<Props> = ({ searchResults }) => {
   const renderResults = (searchResults: Person[]) => {
     {
       return searchResults.map((person: Person) => (
-        <div key={person.name}>
-          <h3>{person.name}</h3>
-          <p>
-            Height: {person.height}, Mass: {person.mass}, Birth Year:{' '}
-            {person.birth_year}
-          </p>
-        </div>
+        <li key={person.name}>
+          <NavLink to={`people/${person.name}`}>{person.name}</NavLink>
+        </li>
       ));
     }
   };
 
   return (
-    <main className={StylesMain['main']}>
-      <h2 className={StylesMain['title-main']}>Результаты поиска:</h2>
-      {renderResults(searchResults)}
-    </main>
+    <>
+      <main>
+        <div className={StylesMain['main']}>
+          <h2 className={StylesMain['title-main']}>Результаты поиска:</h2>
+          <ul>{renderResults(searchResults)}</ul>
+        </div>
+        <div
+          id="detail"
+          className={`${StylesMain['detail']}`}
+          // className={navigation.state === 'loading' ? 'loading' : ''}
+        >
+          <Outlet />
+        </div>
+      </main>
+    </>
   );
 };

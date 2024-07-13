@@ -1,4 +1,4 @@
-import { Person } from '../Header/header';
+import { Person } from '../Header/Header';
 
 const makeDataPerson = (data: { results: Person[] }): Person[] => {
   return data.results.map((person: Person) => ({
@@ -26,9 +26,9 @@ export const fetchSearchResults = async (
   return [];
 };
 
-export const fetchAllItems = async (): Promise<Person[]> => {
+export const fetchAllItems = async (page: number): Promise<Person[]> => {
   try {
-    const response = await fetch(`https://swapi.dev/api/people/`);
+    const response = await fetch(`https://swapi.dev/api/people/?page=${page}`);
     if (response.ok) {
       const data = await response.json();
       return makeDataPerson(data);

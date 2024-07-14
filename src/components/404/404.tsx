@@ -1,14 +1,26 @@
-import React from 'react';
+import Styles from './styles.module.css';
 
-const NotFoundPage = () => {
+import { useRouteError } from 'react-router-dom';
+
+interface RouteError {
+  statusText?: string;
+  message?: string;
+}
+
+const ErrorPage = () => {
+  const error = useRouteError() as RouteError;
+
   return (
     <>
-      <div>
+      <div className={Styles['error-page']}>
         <h1>404</h1>
-        <h2></h2>
+        <p>Sorry, an unexpected error has occurred.</p>
+        <p>
+          <i>{error.statusText || error.message}</i>
+        </p>
       </div>
     </>
   );
 };
 
-export default NotFoundPage;
+export default ErrorPage;

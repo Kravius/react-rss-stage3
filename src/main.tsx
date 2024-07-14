@@ -3,12 +3,32 @@ import ReactDOM from 'react-dom/client';
 import App from './App.tsx';
 import './index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import ErrorPage from './components/404/404.tsx';
+import SearchPage, {
+  loader as searchLoader,
+  action as searchAction,
+} from './components/Header/Header.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    children: [{ path: 'people/:contactId' }],
+    errorElement: <ErrorPage />,
+    loader: searchLoader,
+    action: searchAction,
+    children: [
+      {
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            path: 'planets/',
+            element: <SearchPage />,
+            loader: searchLoader,
+            action: searchAction,
+          },
+        ],
+      },
+    ],
   },
 ]);
 

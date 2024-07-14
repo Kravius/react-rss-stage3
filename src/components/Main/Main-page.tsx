@@ -8,23 +8,22 @@ import {
   // useNavigation,
   // useSubmit,
 } from 'react-router-dom';
-
+import { Planet } from '../Header/Header';
 import StylesMain from './main.module.css';
 
 import React from 'react';
-import { Person } from '../Header/Header';
 
 interface Props {
-  searchResults: Person[];
+  searchResults: Planet[];
   children?: React.ReactNode;
 }
 
-export const Main: React.FC<Props> = ({ searchResults }) => {
-  const renderResults = (searchResults: Person[]) => {
+export const Main: React.FC<Props> = ({ children, searchResults }) => {
+  const renderResults = (searchResults: Planet[]) => {
     {
-      return searchResults.map((person: Person) => (
-        <li key={person.name}>
-          <NavLink to={`people/${person.name}`}>{person.name}</NavLink>
+      return searchResults.map((planets: Planet) => (
+        <li key={planets.name}>
+          <NavLink to={`planets/${planets.name}`}>{planets.name}</NavLink>
         </li>
       ));
     }
@@ -36,6 +35,7 @@ export const Main: React.FC<Props> = ({ searchResults }) => {
         <div className={StylesMain['main']}>
           <h2 className={StylesMain['title-main']}>Результаты поиска:</h2>
           <ul>{renderResults(searchResults)}</ul>
+          {children}
         </div>
         <div
           id="detail"

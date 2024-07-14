@@ -31,27 +31,31 @@ export interface Planet {
   population?: string;
 }
 
-export const loader = async ({ request }: LoaderFunctionArgs) => {
+export const loader = async ({ request, params }: LoaderFunctionArgs) => {
   const url = new URL(request.url);
+  console.log(params.id);
   const searchTerm = url.searchParams.get('searchTerm') || '';
-  const currentPage = Number(url.searchParams.get('page')) || 1;
-  const { searchResults, isLoading } = await fetchData(searchTerm, currentPage);
-  return { searchResults, currentPage, isLoading };
+  const currentPageLoader = Number(url.searchParams.get('page')) || 1;
+  const { searchResultsLoader, isLoadingLoader } = await fetchData(
+    searchTerm,
+    currentPageLoader
+  );
+  return { searchResultsLoader, currentPageLoader, isLoadingLoader };
 };
 
 const fetchData = async (searchTerm: string, currentPage: number) => {
-  console.log(currentPage);
   try {
-    const isLoading = true;
-    const searchResults = searchTerm
+    const isLoadingLoader = true;
+    const searchResultsLoader = searchTerm
       ? await fetchSearchResults(searchTerm)
       : await fetchAllItems(currentPage);
-    return { searchResults, isLoading };
+    // console.log(searchResultsLoader, 'loader');
+    return { searchResultsLoader, isLoadingLoader };
   } catch (error) {
     console.error('Oops', error);
-    const isLoading = false;
-    const searchResults: Planet[] = [];
-    return { searchResults, isLoading };
+    const isLoadingLoader = false;
+    const searchResultsLoader: Planet[] = [];
+    return { searchResultsLoader, isLoadingLoader };
   }
 };
 
@@ -64,12 +68,17 @@ const SearchPage: FC = () => {
     'searchTerm',
     ''
   );
-  console.log(useLoaderData());
-  // const { currentPage } = useLoaderData();
-  const [currentPage] = useState(1);
-  // const [currentPage, setCurrentPage] = useState(1);
-  const [isLoading, setIsLoading] = useState(false);
-  const [searchResults, setSearchResults] = useState<Planet[]>([]);
+  const { currentPageLoader, searchResultsLoader, isLoadingLoader } =
+    useLoaderData() as {
+      currentPageLoader: number;
+      searchResultsLoader: Planet[];
+      isLoadingLoader: boolean;
+    };
+
+  const [currentPage, setCurrentPage] = useState(currentPageLoader);
+  const [isLoading, setIsLoading] = useState(isLoadingLoader);
+  const [searchResults, setSearchResults] =
+    useState<Planet[]>(searchResultsLoader);
   const [buttonClicked, setButtonClicked] = useState(false);
   const navigate = useNavigate();
 
@@ -85,7 +94,7 @@ const SearchPage: FC = () => {
     } finally {
       setIsLoading(false);
     }
-  }, [buttonClicked]);
+  }, [searchTerm, currentPage]);
 
   useEffect(() => {
     fetchData();
@@ -104,7 +113,8 @@ const SearchPage: FC = () => {
   };
 
   const handlePageChange = (page: number) => {
-    navigate(`/?searchTerm=${searchTerm}&page=${page}`);
+    setCurrentPage(page);
+    navigate(`/?search=${searchTerm}&page=${page}`);
   };
 
   return (

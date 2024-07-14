@@ -1,10 +1,10 @@
 import {
   Outlet,
-  // Link,
+  Link,
   // useLoaderData,
   // Form,
   // redirect,
-  NavLink,
+  // NavLink,
   // useNavigation,
   // useSubmit,
 } from 'react-router-dom';
@@ -23,7 +23,7 @@ export const Main: React.FC<Props> = ({ children, searchResults }) => {
     {
       return searchResults.map((planets: Planet) => (
         <li key={planets.name}>
-          <NavLink to={`planets/${planets.name}`}>{planets.name}</NavLink>
+          <Link to={`${planets.name}`}>{planets.name}</Link>
         </li>
       ));
     }

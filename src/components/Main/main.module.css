@@ -1,0 +1,38 @@
+main {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+.main {
+  border: 1px solid skyblue;
+  border-radius: 5px;
+  padding: 5px 10px;
+  width: 22rem;
+  height: 500px;
+  display: flex;
+  flex-direction: column;
+
+  p {
+    color: rgb(253, 224, 0);
+  }
+  div {
+    margin: 2px 0;
+    line-height: 0;
+    border: 1px solid #00ffc4;
+  }
+  h3 {
+    color: #00ffc4;
+  }
+}
+
+.title-main {
+  color: #e69d0c;
+}
+
+.detail {
+  flex: 1;
+  padding: 2rem 4rem;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  margin-left: 10px;
+}

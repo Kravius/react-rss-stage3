@@ -1,0 +1,13 @@
+body {
+  background-image: url('/src/assets/back.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+#root {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+  box-sizing: border-box;
+}
